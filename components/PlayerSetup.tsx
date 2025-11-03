@@ -49,7 +49,7 @@ export default function PlayerSetup({
 
               <div>
                 <label htmlFor="player1-fargo" className="block text-sm font-medium mb-2">
-                  Fargorate
+                  Fargorate <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="player1-fargo"
@@ -58,6 +58,7 @@ export default function PlayerSetup({
                   onChange={(e) => onPlayer1Change({ ...player1, fargo: e.target.value })}
                   className="w-full px-4 py-2 border-2 border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700"
                   placeholder="Fargorateを入力"
+                  required
                 />
               </div>
             </div>
@@ -91,7 +92,7 @@ export default function PlayerSetup({
 
               <div>
                 <label htmlFor="player2-fargo" className="block text-sm font-medium mb-2">
-                  Fargorate
+                  Fargorate <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="player2-fargo"
@@ -100,6 +101,7 @@ export default function PlayerSetup({
                   onChange={(e) => onPlayer2Change({ ...player2, fargo: e.target.value })}
                   className="w-full px-4 py-2 border-2 border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700"
                   placeholder="Fargorateを入力"
+                  required
                 />
               </div>
             </div>
@@ -109,7 +111,7 @@ export default function PlayerSetup({
         <button
           type="button"
           onClick={onStartGame}
-          disabled={!player1.name || !player2.name}
+          disabled={!player1.name || !player2.name || !player1.fargo || !player2.fargo}
           className="w-full py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white rounded-lg text-lg font-bold hover:from-blue-700 hover:to-red-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition shadow-lg"
         >
           ゲーム開始
