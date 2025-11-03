@@ -4,6 +4,7 @@ interface ScoreHistoryProps {
   player1Scores: number[];
   player2Scores: number[];
   currentRack: number;
+  onEditRack: (rackIndex: number) => void;
 }
 
 export default function ScoreHistory({
@@ -12,6 +13,7 @@ export default function ScoreHistory({
   player1Scores,
   player2Scores,
   currentRack,
+  onEditRack,
 }: ScoreHistoryProps) {
   if (currentRack === 0) {
     return null;
@@ -20,6 +22,7 @@ export default function ScoreHistory({
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
       <h3 className="text-xl font-bold mb-4">Score History</h3>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Tap a row to edit</p>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -31,10 +34,14 @@ export default function ScoreHistory({
           </thead>
           <tbody>
             {Array.from({ length: currentRack }, (_, i) => (
-              <tr key={`rack-${i + 1}`} className="border-b">
-                <td className="py-2 px-4">{i + 1}</td>
-                <td className="py-2 px-4 text-center">{player1Scores[i] ?? '-'}</td>
-                <td className="py-2 px-4 text-center">{player2Scores[i] ?? '-'}</td>
+              <tr
+                key={`rack-${i + 1}`}
+                onClick={() => onEditRack(i)}
+                className="border-b hover:bg-blue-50 dark:hover:bg-blue-900/20 active:bg-blue-100 dark:active:bg-blue-900/40 cursor-pointer transition-colors"
+              >
+                <td className="py-3 px-4">{i + 1}</td>
+                <td className="py-3 px-4 text-center font-medium">{player1Scores[i] ?? '-'}</td>
+                <td className="py-3 px-4 text-center font-medium">{player2Scores[i] ?? '-'}</td>
               </tr>
             ))}
           </tbody>

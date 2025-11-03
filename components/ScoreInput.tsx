@@ -9,6 +9,8 @@ interface ScoreInputProps {
   onPlayer1ScoreChange: (score: number) => void;
   onPlayer2ScoreChange: (score: number) => void;
   onNextRack: () => void;
+  isEditMode?: boolean;
+  onCancelEdit?: () => void;
 }
 
 export default function ScoreInput({
@@ -20,9 +22,24 @@ export default function ScoreInput({
   onPlayer1ScoreChange,
   onPlayer2ScoreChange,
   onNextRack,
+  isEditMode = false,
+  onCancelEdit,
 }: ScoreInputProps) {
-  const [winner, setWinner] = useState<'player1' | 'player2' | null>(null);
-  const [loserScore, setLoserScore] = useState<string>('');
+  // Initialize winner and loserScore based on existing scores in edit mode
+  const getInitialWinner = (): 'player1' | 'player2' | null => {
+    if (player1Score === 14) return 'player1';
+    if (player2Score === 14) return 'player2';
+    return null;
+  };
+
+  const getInitialLoserScore = (): string => {
+    if (player1Score === 14 && player2Score !== undefined) return player2Score.toString();
+    if (player2Score === 14 && player1Score !== undefined) return player1Score.toString();
+    return '';
+  };
+
+  const [winner, setWinner] = useState<'player1' | 'player2' | null>(getInitialWinner());
+  const [loserScore, setLoserScore] = useState<string>(getInitialLoserScore());
 
   const handleWinnerSelect = (selectedWinner: 'player1' | 'player2') => {
     setWinner(selectedWinner);
@@ -64,7 +81,20 @@ export default function ScoreInput({
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
-      <h3 className="text-xl font-bold mb-4 text-center">Rack {currentRack + 1}</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="text-xl font-bold text-center flex-1">
+          {isEditMode ? `Edit Rack ${currentRack + 1}` : `Rack ${currentRack + 1}`}
+        </h3>
+        {isEditMode && onCancelEdit && (
+          <button
+            type="button"
+            onClick={onCancelEdit}
+            className="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition"
+          >
+            Cancel
+          </button>
+        )}
+      </div>
 
       {/* Winner Selection */}
       <div className="mb-6">
@@ -114,14 +144,14 @@ export default function ScoreInput({
         </div>
       )}
 
-      {/* Next Rack Button */}
+      {/* Next Rack / Save Button */}
       <button
         type="button"
         onClick={handleNextRack}
         disabled={!isValidScore}
         className="w-full mt-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition shadow-lg"
       >
-        Next Rack
+        {isEditMode ? 'Save Changes' : 'Next Rack'}
       </button>
     </div>
   );

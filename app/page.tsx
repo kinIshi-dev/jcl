@@ -14,6 +14,7 @@ export default function Home() {
   const [player2Scores, setPlayer2Scores] = useState<number[]>([]);
   const [currentRack, setCurrentRack] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
+  const [editingRack, setEditingRack] = useState<number | null>(null);
 
   const startGame = () => {
     if (player1.name && player2.name) {
@@ -40,8 +41,26 @@ export default function Home() {
 
   const nextRack = () => {
     if (player1Scores[currentRack] !== undefined && player2Scores[currentRack] !== undefined) {
-      setCurrentRack(currentRack + 1);
+      if (editingRack !== null) {
+        // Exit edit mode and return to the latest rack
+        setEditingRack(null);
+        setCurrentRack(player1Scores.length);
+      } else {
+        // Move to next rack
+        setCurrentRack(currentRack + 1);
+      }
     }
+  };
+
+  const handleEditRack = (rackIndex: number) => {
+    setEditingRack(rackIndex);
+    setCurrentRack(rackIndex);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingRack(null);
+    // Return to the latest rack
+    setCurrentRack(player1Scores.length);
   };
 
   const getTotal = (scores: number[]) => {
@@ -79,6 +98,8 @@ export default function Home() {
           onPlayer1ScoreChange={addPlayer1Score}
           onPlayer2ScoreChange={addPlayer2Score}
           onNextRack={nextRack}
+          isEditMode={editingRack !== null}
+          onCancelEdit={handleCancelEdit}
         />
 
         <ScoreHistory
@@ -86,7 +107,8 @@ export default function Home() {
           player2Name={player2.name}
           player1Scores={player1Scores}
           player2Scores={player2Scores}
-          currentRack={currentRack}
+          currentRack={player1Scores.length}
+          onEditRack={handleEditRack}
         />
       </div>
     </div>
