@@ -5,6 +5,7 @@ import PlayerSetup from '@/components/PlayerSetup';
 import ScoreHistory from '@/components/ScoreHistory';
 import ScoreInput from '@/components/ScoreInput';
 import type { Player } from '@/types/game';
+import { calculateRace } from '@/utils/calculate';
 import { useState } from 'react';
 
 export default function Home() {
@@ -15,9 +16,16 @@ export default function Home() {
   const [currentRack, setCurrentRack] = useState(0);
   const [gameStarted, setGameStarted] = useState(false);
   const [editingRack, setEditingRack] = useState<number | null>(null);
+  const [player1Goal, setPlayer1Goal] = useState<number>(0);
+  const [player2Goal, setPlayer2Goal] = useState<number>(0);
 
   const startGame = () => {
     if (player1.name && player2.name) {
+      // FargoRateからゴール点数を計算（長いレース: 1.0）
+      const raceResult = calculateRace(1.0, player1.fargo, player2.fargo);
+      setPlayer1Goal(raceResult.raceToOne);
+      setPlayer2Goal(raceResult.raceToTwo);
+
       setGameStarted(true);
       setPlayer1Scores([]);
       setPlayer2Scores([]);
@@ -85,8 +93,8 @@ export default function Home() {
         <h1 className="text-3xl font-bold mb-6 text-center">JCL Scoreboard</h1>
 
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <PlayerScoreCard player={player1} totalScore={getTotal(player1Scores)} />
-          <PlayerScoreCard player={player2} totalScore={getTotal(player2Scores)} />
+          <PlayerScoreCard player={player1} totalScore={getTotal(player1Scores)} goalScore={player1Goal} />
+          <PlayerScoreCard player={player2} totalScore={getTotal(player2Scores)} goalScore={player2Goal} />
         </div>
 
         <ScoreInput
