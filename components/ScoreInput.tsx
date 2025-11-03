@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface ScoreInputProps {
   player1Name: string;
@@ -41,12 +41,26 @@ export default function ScoreInput({
   const [winner, setWinner] = useState<'player1' | 'player2' | null>(getInitialWinner());
   const [loserScore, setLoserScore] = useState<string>(getInitialLoserScore());
 
+  // スコアが変わったときにローカルステートを再初期化
+  useEffect(() => {
+    const newWinner = player1Score === 14 ? 'player1' : player2Score === 14 ? 'player2' : null;
+    const newLoserScore =
+      player1Score === 14 && player2Score !== undefined ? player2Score.toString() :
+      player2Score === 14 && player1Score !== undefined ? player1Score.toString() : '';
+
+    setWinner(newWinner);
+    setLoserScore(newLoserScore);
+  }, [player1Score, player2Score]);
+
   const handleWinnerSelect = (selectedWinner: 'player1' | 'player2') => {
     setWinner(selectedWinner);
     setLoserScore('');
-    // Reset scores when changing winner
-    onPlayer1ScoreChange(undefined as unknown as number);
-    onPlayer2ScoreChange(undefined as unknown as number);
+    // 編集モードでない場合のみスコアをクリア
+    // 編集モードでは既存のスコアを保持
+    if (!isEditMode) {
+      onPlayer1ScoreChange(undefined as unknown as number);
+      onPlayer2ScoreChange(undefined as unknown as number);
+    }
   };
 
   const handleLoserScoreChange = (score: string) => {

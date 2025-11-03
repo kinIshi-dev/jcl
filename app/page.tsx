@@ -75,6 +75,17 @@ export default function Home() {
     return scores.reduce((sum, score) => sum + (score || 0), 0);
   };
 
+  // 完成したラックの数を計算（両プレイヤーのスコアが入力済み）
+  const getCompletedRacksCount = () => {
+    let count = 0;
+    for (let i = 0; i < Math.max(player1Scores.length, player2Scores.length); i++) {
+      if (player1Scores[i] !== undefined && player2Scores[i] !== undefined) {
+        count++;
+      }
+    }
+    return count;
+  };
+
   if (!gameStarted) {
     return (
       <PlayerSetup
@@ -115,7 +126,7 @@ export default function Home() {
           player2Name={player2.name}
           player1Scores={player1Scores}
           player2Scores={player2Scores}
-          currentRack={player1Scores.length}
+          currentRack={getCompletedRacksCount()}
           onEditRack={handleEditRack}
         />
       </div>
