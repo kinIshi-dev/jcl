@@ -66,8 +66,12 @@ export default function ScoreInput({
   const handleLoserScoreChange = (score: string) => {
     setLoserScore(score);
     if (score === '') {
-      onPlayer1ScoreChange(undefined as unknown as number);
-      onPlayer2ScoreChange(undefined as unknown as number);
+      // 編集モードでない場合のみスコアをクリア
+      // 編集モードでは入力欄が空になっても既存のスコアを保持
+      if (!isEditMode) {
+        onPlayer1ScoreChange(undefined as unknown as number);
+        onPlayer2ScoreChange(undefined as unknown as number);
+      }
       return;
     }
 
