@@ -83,7 +83,7 @@ export default function ScoreInput({
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-xl font-bold text-center flex-1">
-          {isEditMode ? `Edit Rack ${currentRack + 1}` : `Rack ${currentRack + 1}`}
+          {isEditMode ? `Edit Rack #${currentRack + 1}` : `Rack #${currentRack + 1}`}
         </h3>
         {isEditMode && onCancelEdit && (
           <button

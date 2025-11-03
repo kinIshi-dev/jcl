@@ -39,7 +39,7 @@ export default function ScoreHistory({
                 onClick={() => onEditRack(i)}
                 className="border-b hover:bg-blue-50 dark:hover:bg-blue-900/20 active:bg-blue-100 dark:active:bg-blue-900/40 cursor-pointer transition-colors"
               >
-                <td className="py-3 px-4">{i + 1}</td>
+                <td className="py-3 px-4">#{i + 1}</td>
                 <td className="py-3 px-4 text-center font-medium">{player1Scores[i] ?? '-'}</td>
                 <td className="py-3 px-4 text-center font-medium">{player2Scores[i] ?? '-'}</td>
               </tr>
