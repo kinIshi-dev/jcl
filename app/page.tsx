@@ -1,5 +1,6 @@
 'use client';
 
+import GameResult from '@/components/GameResult';
 import PlayerScoreCard from '@/components/PlayerScoreCard';
 import PlayerSetup from '@/components/PlayerSetup';
 import ScoreHistory from '@/components/ScoreHistory';
@@ -18,6 +19,7 @@ export default function Home() {
   const [editingRack, setEditingRack] = useState<number | null>(null);
   const [player1Goal, setPlayer1Goal] = useState<number>(0);
   const [player2Goal, setPlayer2Goal] = useState<number>(0);
+  const [showGameResult, setShowGameResult] = useState(false);
 
   const startGame = () => {
     if (player1.name && player2.name) {
@@ -56,6 +58,13 @@ export default function Home() {
       } else {
         // Move to next rack
         setCurrentRack(currentRack + 1);
+
+        // 次のラックに進んだ後、試合が終了していればモーダルを表示
+        const newPlayer1Total = getTotal([...player1Scores].slice(0, currentRack + 1));
+        const newPlayer2Total = getTotal([...player2Scores].slice(0, currentRack + 1));
+        if (newPlayer1Total >= player1Goal || newPlayer2Total >= player2Goal) {
+          setShowGameResult(true);
+        }
       }
     }
   };
@@ -73,6 +82,32 @@ export default function Home() {
 
   const getTotal = (scores: number[]) => {
     return scores.reduce((sum, score) => sum + (score || 0), 0);
+  };
+
+  // 勝者を取得
+  const getWinner = (): Player | null => {
+    const player1Total = getTotal(player1Scores);
+    const player2Total = getTotal(player2Scores);
+    if (player1Total >= player1Goal) return player1;
+    if (player2Total >= player2Goal) return player2;
+    return null;
+  };
+
+  // ゲームをリセット
+  const resetGame = () => {
+    setGameStarted(false);
+    setPlayer1Scores([]);
+    setPlayer2Scores([]);
+    setCurrentRack(0);
+    setEditingRack(null);
+    setPlayer1Goal(0);
+    setPlayer2Goal(0);
+    setShowGameResult(false);
+  };
+
+  // 試合結果モーダルを閉じる
+  const closeGameResult = () => {
+    setShowGameResult(false);
   };
 
   // 完成したラックの数を計算（両プレイヤーのスコアが入力済み）
@@ -98,14 +133,18 @@ export default function Home() {
     );
   }
 
+  const winner = getWinner();
+  const player1Total = getTotal(player1Scores);
+  const player2Total = getTotal(player2Scores);
+
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-center">JCL Scoreboard</h1>
 
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <PlayerScoreCard player={player1} totalScore={getTotal(player1Scores)} goalScore={player1Goal} />
-          <PlayerScoreCard player={player2} totalScore={getTotal(player2Scores)} goalScore={player2Goal} />
+          <PlayerScoreCard player={player1} totalScore={player1Total} goalScore={player1Goal} />
+          <PlayerScoreCard player={player2} totalScore={player2Total} goalScore={player2Goal} />
         </div>
 
         <ScoreInput
@@ -129,6 +168,20 @@ export default function Home() {
           currentRack={getCompletedRacksCount()}
           onEditRack={handleEditRack}
         />
+
+        {showGameResult && winner && (
+          <GameResult
+            winner={winner}
+            player1={player1}
+            player2={player2}
+            player1Score={player1Total}
+            player2Score={player2Total}
+            player1Goal={player1Goal}
+            player2Goal={player2Goal}
+            onPlayAgain={resetGame}
+            onClose={closeGameResult}
+          />
+        )}
       </div>
     </div>
   );
