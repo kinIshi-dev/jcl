@@ -9,6 +9,7 @@ interface GameResultProps {
   player1Goal: number;
   player2Goal: number;
   onPlayAgain: () => void;
+  onClose: () => void;
 }
 
 export default function GameResult({
@@ -20,6 +21,7 @@ export default function GameResult({
   player1Goal,
   player2Goal,
   onPlayAgain,
+  onClose,
 }: GameResultProps) {
   // 勝者と敗者のスコアとゴールを判定
   const isPlayer1Winner = winner.name === player1.name;
@@ -90,12 +92,20 @@ export default function GameResult({
           </div>
         </div>
 
-        <button
-          onClick={onPlayAgain}
-          className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors"
-        >
-          もう一度プレイ
-        </button>
+        <div className="space-y-3">
+          <button
+            onClick={onClose}
+            className="w-full bg-gray-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors"
+          >
+            戻る
+          </button>
+          <button
+            onClick={onPlayAgain}
+            className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            もう一度プレイ
+          </button>
+        </div>
       </div>
     </div>
   );

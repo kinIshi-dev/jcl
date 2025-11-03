@@ -19,6 +19,7 @@ export default function Home() {
   const [editingRack, setEditingRack] = useState<number | null>(null);
   const [player1Goal, setPlayer1Goal] = useState<number>(0);
   const [player2Goal, setPlayer2Goal] = useState<number>(0);
+  const [showGameResult, setShowGameResult] = useState(false);
 
   const startGame = () => {
     if (player1.name && player2.name) {
@@ -57,6 +58,13 @@ export default function Home() {
       } else {
         // Move to next rack
         setCurrentRack(currentRack + 1);
+
+        // 次のラックに進んだ後、試合が終了していればモーダルを表示
+        const newPlayer1Total = getTotal([...player1Scores].slice(0, currentRack + 1));
+        const newPlayer2Total = getTotal([...player2Scores].slice(0, currentRack + 1));
+        if (newPlayer1Total >= player1Goal || newPlayer2Total >= player2Goal) {
+          setShowGameResult(true);
+        }
       }
     }
   };
@@ -74,13 +82,6 @@ export default function Home() {
 
   const getTotal = (scores: number[]) => {
     return scores.reduce((sum, score) => sum + (score || 0), 0);
-  };
-
-  // 試合完了判定
-  const isGameFinished = () => {
-    const player1Total = getTotal(player1Scores);
-    const player2Total = getTotal(player2Scores);
-    return player1Total >= player1Goal || player2Total >= player2Goal;
   };
 
   // 勝者を取得
@@ -101,6 +102,12 @@ export default function Home() {
     setEditingRack(null);
     setPlayer1Goal(0);
     setPlayer2Goal(0);
+    setShowGameResult(false);
+  };
+
+  // 試合結果モーダルを閉じる
+  const closeGameResult = () => {
+    setShowGameResult(false);
   };
 
   // 完成したラックの数を計算（両プレイヤーのスコアが入力済み）
@@ -127,7 +134,6 @@ export default function Home() {
   }
 
   const winner = getWinner();
-  const gameFinished = isGameFinished();
   const player1Total = getTotal(player1Scores);
   const player2Total = getTotal(player2Scores);
 
@@ -163,7 +169,7 @@ export default function Home() {
           onEditRack={handleEditRack}
         />
 
-        {gameFinished && winner && (
+        {showGameResult && winner && (
           <GameResult
             winner={winner}
             player1={player1}
@@ -173,6 +179,7 @@ export default function Home() {
             player1Goal={player1Goal}
             player2Goal={player2Goal}
             onPlayAgain={resetGame}
+            onClose={closeGameResult}
           />
         )}
       </div>
