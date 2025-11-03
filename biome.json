@@ -39,15 +39,6 @@
     }
   },
   "files": {
-    "ignore": [
-      "node_modules",
-      ".next",
-      "out",
-      "dist",
-      "build",
-      ".turbo",
-      "coverage",
-      ".git"
-    ]
+    "ignore": ["node_modules", ".next", "out", "dist", "build", ".turbo", "coverage", ".git"]
   }
 }
