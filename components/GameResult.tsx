@@ -30,7 +30,7 @@ export default function GameResult({
   const loserGoal = isPlayer1Winner ? player2Goal : player1Goal;
 
   // 最終スコア計算
-  const loserDeficit = loserGoal - loserScore; // 敗者の不足点数
+  const loserDeficit = Math.max(0, loserGoal - loserScore); // 敗者の不足点数（0以上）
   const winnerFinalScore = 100 + loserDeficit * 2; // 勝者: 100(wb) + 不足点数*2(mov)
   const loserFinalScore = loserScore; // 敗者: 稼いだ得点
 

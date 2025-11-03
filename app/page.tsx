@@ -88,6 +88,18 @@ export default function Home() {
   const getWinner = (): Player | null => {
     const player1Total = getTotal(player1Scores);
     const player2Total = getTotal(player2Scores);
+
+    // 両者がゴールに達した場合、最後のラックで14点を取った方が勝者
+    if (player1Total >= player1Goal && player2Total >= player2Goal) {
+      const lastRackIndex = Math.min(player1Scores.length, player2Scores.length) - 1;
+      if (lastRackIndex >= 0) {
+        const lastPlayer1Score = player1Scores[lastRackIndex];
+        const lastPlayer2Score = player2Scores[lastRackIndex];
+        if (lastPlayer1Score === 14) return player1;
+        if (lastPlayer2Score === 14) return player2;
+      }
+    }
+
     if (player1Total >= player1Goal) return player1;
     if (player2Total >= player2Goal) return player2;
     return null;
@@ -105,9 +117,18 @@ export default function Home() {
     setShowGameResult(false);
   };
 
-  // 試合結果モーダルを閉じる
+  // 試合結果モーダルを閉じて最終ラックを削除
   const closeGameResult = () => {
     setShowGameResult(false);
+    // 最終ラックのスコアを配列から削除して再入力できるようにする
+    const lastRackIndex = getCompletedRacksCount() - 1;
+    if (lastRackIndex >= 0) {
+      const newPlayer1Scores = player1Scores.slice(0, lastRackIndex);
+      const newPlayer2Scores = player2Scores.slice(0, lastRackIndex);
+      setPlayer1Scores(newPlayer1Scores);
+      setPlayer2Scores(newPlayer2Scores);
+      setCurrentRack(lastRackIndex);
+    }
   };
 
   // 完成したラックの数を計算（両プレイヤーのスコアが入力済み）
