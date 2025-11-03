@@ -69,8 +69,9 @@ export default function ScoreInput({
     }
   };
 
-  const isValidScore = player1Score === 14 && player2Score !== undefined && player2Score >= 0 && player2Score <= 7 ||
-                       player2Score === 14 && player1Score !== undefined && player1Score >= 0 && player1Score <= 7;
+  const isValidScore =
+    (player1Score === 14 && player2Score !== undefined && player2Score >= 0 && player2Score <= 7) ||
+    (player2Score === 14 && player1Score !== undefined && player1Score >= 0 && player1Score <= 7);
 
   const handleNextRack = () => {
     onNextRack();
@@ -91,14 +92,14 @@ export default function ScoreInput({
             onClick={onCancelEdit}
             className="px-3 py-1 text-sm bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 rounded hover:bg-gray-300 dark:hover:bg-gray-600 transition"
           >
-            Cancel
+            キャンセル
           </button>
         )}
       </div>
 
       {/* Winner Selection */}
       <div className="mb-6">
-        <p className="text-sm font-medium mb-3 text-center">Who won this rack?</p>
+        <p className="text-sm font-medium mb-3 text-center">勝った方を選択</p>
         <div className="grid grid-cols-2 gap-4">
           <button
             type="button"
@@ -129,7 +130,7 @@ export default function ScoreInput({
       {winner && (
         <div className="mb-4">
           <label htmlFor="loser-score" className="block text-sm font-medium mb-2 text-center">
-            {winner === 'player1' ? player2Name : player1Name}'s Score (0-7)
+            {winner === 'player1' ? player2Name : player1Name} のスコア (0-7)
           </label>
           <input
             id="loser-score"
@@ -139,7 +140,7 @@ export default function ScoreInput({
             value={loserScore}
             onChange={(e) => handleLoserScoreChange(e.target.value)}
             className="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 text-center text-lg"
-            placeholder="Enter score (0-7)"
+            placeholder="スコアを入力 (0-7)"
           />
         </div>
       )}
@@ -151,7 +152,7 @@ export default function ScoreInput({
         disabled={!isValidScore}
         className="w-full mt-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition shadow-lg"
       >
-        {isEditMode ? 'Save Changes' : 'Next Rack'}
+        {isEditMode ? '変更を保存' : '次のラックへ'}
       </button>
     </div>
   );

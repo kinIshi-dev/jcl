@@ -21,8 +21,8 @@ export default function ScoreHistory({
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
-      <h3 className="text-xl font-bold mb-4">Score History</h3>
-      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">Tap a row to edit</p>
+      <h3 className="text-xl font-bold mb-4">スコア履歴</h3>
+      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">行をタップして編集</p>
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>

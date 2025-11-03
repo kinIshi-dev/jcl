@@ -35,7 +35,7 @@ export default function PlayerSetup({
             <div className="space-y-4">
               <div>
                 <label htmlFor="player1-name" className="block text-sm font-medium mb-2">
-                  Name
+                  名前
                 </label>
                 <input
                   id="player1-name"
@@ -43,7 +43,7 @@ export default function PlayerSetup({
                   value={player1.name}
                   onChange={(e) => onPlayer1Change({ ...player1, name: e.target.value })}
                   className="w-full px-4 py-2 border-2 border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700"
-                  placeholder="Enter name"
+                  placeholder="名前を入力"
                 />
               </div>
 
@@ -57,7 +57,7 @@ export default function PlayerSetup({
                   value={player1.fargo}
                   onChange={(e) => onPlayer1Change({ ...player1, fargo: e.target.value })}
                   className="w-full px-4 py-2 border-2 border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-700"
-                  placeholder="Enter Fargorate"
+                  placeholder="Fargorateを入力"
                 />
               </div>
             </div>
@@ -77,7 +77,7 @@ export default function PlayerSetup({
             <div className="space-y-4">
               <div>
                 <label htmlFor="player2-name" className="block text-sm font-medium mb-2">
-                  Name
+                  名前
                 </label>
                 <input
                   id="player2-name"
@@ -85,7 +85,7 @@ export default function PlayerSetup({
                   value={player2.name}
                   onChange={(e) => onPlayer2Change({ ...player2, name: e.target.value })}
                   className="w-full px-4 py-2 border-2 border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700"
-                  placeholder="Enter name"
+                  placeholder="名前を入力"
                 />
               </div>
 
@@ -99,7 +99,7 @@ export default function PlayerSetup({
                   value={player2.fargo}
                   onChange={(e) => onPlayer2Change({ ...player2, fargo: e.target.value })}
                   className="w-full px-4 py-2 border-2 border-red-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white dark:bg-gray-700"
-                  placeholder="Enter Fargorate"
+                  placeholder="Fargorateを入力"
                 />
               </div>
             </div>
@@ -112,7 +112,7 @@ export default function PlayerSetup({
           disabled={!player1.name || !player2.name}
           className="w-full py-4 bg-gradient-to-r from-blue-600 to-red-600 text-white rounded-lg text-lg font-bold hover:from-blue-700 hover:to-red-700 disabled:from-gray-400 disabled:to-gray-400 disabled:cursor-not-allowed transition shadow-lg"
         >
-          Start Game
+          ゲーム開始
         </button>
       </div>
     </div>
