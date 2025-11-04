@@ -199,6 +199,8 @@ export default function Home() {
             player2Score={player2Total}
             player1Goal={player1Goal}
             player2Goal={player2Goal}
+            player1Scores={player1Scores}
+            player2Scores={player2Scores}
             onPlayAgain={resetGame}
             onClose={closeGameResult}
           />
