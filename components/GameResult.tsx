@@ -29,7 +29,6 @@ export default function GameResult({
 }: GameResultProps) {
   // 勝者と敗者のスコアとゴールを判定
   const isPlayer1Winner = winner.name === player1.name;
-  const winnerScore = isPlayer1Winner ? player1Score : player2Score;
   const loserScore = isPlayer1Winner ? player2Score : player1Score;
   const loserGoal = isPlayer1Winner ? player2Goal : player1Goal;
 
@@ -107,7 +106,7 @@ export default function GameResult({
               if (player2Scores[index] === undefined) return null;
               return (
                 <div
-                  key={index}
+                  key={`rack-${index}`}
                   className="flex justify-between items-center text-sm py-2 px-3 bg-white rounded"
                 >
                   <span className="text-gray-600">#{index + 1}</span>
@@ -131,12 +130,14 @@ export default function GameResult({
 
         <div className="space-y-3">
           <button
+            type="button"
             onClick={onClose}
             className="w-full bg-gray-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-gray-600 transition-colors"
           >
             戻る
           </button>
           <button
+            type="button"
             onClick={onPlayAgain}
             className="w-full bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg hover:bg-blue-600 transition-colors"
           >
