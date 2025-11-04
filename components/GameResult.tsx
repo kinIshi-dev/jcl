@@ -8,6 +8,8 @@ interface GameResultProps {
   player2Score: number;
   player1Goal: number;
   player2Goal: number;
+  player1Scores: number[];
+  player2Scores: number[];
   onPlayAgain: () => void;
   onClose: () => void;
 }
@@ -20,6 +22,8 @@ export default function GameResult({
   player2Score,
   player1Goal,
   player2Goal,
+  player1Scores,
+  player2Scores,
   onPlayAgain,
   onClose,
 }: GameResultProps) {
@@ -56,39 +60,72 @@ export default function GameResult({
             <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <span className="font-medium">{player1.name}</span>
-                <span className="text-2xl font-bold text-blue-600">
-                  {player1FinalScore}
-                </span>
+                <span className="text-2xl font-bold text-600">{player1FinalScore}</span>
               </div>
               <div className="text-xs text-gray-500 text-right">
                 {isPlayer1Winner ? (
                   <div>
                     <div>100 (WB) + {loserDeficit} × 2 (MOV)</div>
-                    <div>ラック: {player1Score} / {player1Goal}</div>
+                    <div>
+                      合計: {player1Score} / {player1Goal}
+                    </div>
                   </div>
                 ) : (
-                  <div>ラック: {player1Score} / {player1Goal}</div>
+                  <div>
+                    合計: {player1Score} / {player1Goal}
+                  </div>
                 )}
               </div>
             </div>
             <div className="space-y-1">
               <div className="flex justify-between items-center">
                 <span className="font-medium">{player2.name}</span>
-                <span className="text-2xl font-bold text-blue-600">
-                  {player2FinalScore}
-                </span>
+                <span className="text-2xl font-bold text-600">{player2FinalScore}</span>
               </div>
               <div className="text-xs text-gray-500 text-right">
                 {!isPlayer1Winner ? (
                   <div>
                     <div>100 (WB) + {loserDeficit} × 2 (MOV)</div>
-                    <div>ラック: {player2Score} / {player2Goal}</div>
+                    <div>
+                      合計: {player2Score} / {player2Goal}
+                    </div>
                   </div>
                 ) : (
-                  <div>ラック: {player2Score} / {player2Goal}</div>
+                  <div>
+                    合計: {player2Score} / {player2Goal}
+                  </div>
                 )}
               </div>
             </div>
+          </div>
+        </div>
+
+        <div className="bg-gray-50 rounded-lg p-4 mb-6 max-h-60 overflow-y-auto">
+          <h3 className="font-semibold mb-3 text-center">ラック履歴</h3>
+          <div className="space-y-2">
+            {player1Scores.map((score, index) => {
+              if (player2Scores[index] === undefined) return null;
+              return (
+                <div
+                  key={index}
+                  className="flex justify-between items-center text-sm py-2 px-3 bg-white rounded"
+                >
+                  <span className="text-gray-600">#{index + 1}</span>
+                  <div className="flex gap-4">
+                    <span className={score === 14 ? 'font-bold text-blue-600' : 'text-gray-700'}>
+                      {player1.name}: {score}
+                    </span>
+                    <span
+                      className={
+                        player2Scores[index] === 14 ? 'font-bold text-red-600' : 'text-gray-700'
+                      }
+                    >
+                      {player2.name}: {player2Scores[index]}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
 
