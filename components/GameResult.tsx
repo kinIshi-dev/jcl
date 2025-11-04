@@ -106,7 +106,7 @@ export default function GameResult({
               if (player2Scores[index] === undefined) return null;
               return (
                 <div
-                  key={`rack-${index}`}
+                  key={index}
                   className="flex justify-between items-center text-sm py-2 px-3 bg-white rounded"
                 >
                   <span className="text-gray-600">#{index + 1}</span>
