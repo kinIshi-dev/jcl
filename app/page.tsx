@@ -20,6 +20,7 @@ export default function Home() {
   const [player1Goal, setPlayer1Goal] = useState<number>(0);
   const [player2Goal, setPlayer2Goal] = useState<number>(0);
   const [showGameResult, setShowGameResult] = useState(false);
+  const [initialBreaker, setInitialBreaker] = useState<'player1' | 'player2' | null>(null);
 
   const startGame = () => {
     if (player1.name && player2.name) {
@@ -115,6 +116,7 @@ export default function Home() {
     setPlayer1Goal(0);
     setPlayer2Goal(0);
     setShowGameResult(false);
+    setInitialBreaker(null);
   };
 
   // 試合結果モーダルを閉じて最終ラックを削除
@@ -142,6 +144,13 @@ export default function Home() {
     return count;
   };
 
+  // 現在のブレイカーを計算（ラック毎に交互）
+  const getCurrentBreaker = (): 'player1' | 'player2' | null => {
+    if (!initialBreaker) return null;
+    // 偶数ラック（0, 2, 4...）は最初のブレイカー、奇数ラック（1, 3, 5...）は逆
+    return currentRack % 2 === 0 ? initialBreaker : (initialBreaker === 'player1' ? 'player2' : 'player1');
+  };
+
   if (!gameStarted) {
     return (
       <PlayerSetup
@@ -157,15 +166,49 @@ export default function Home() {
   const winner = getWinner();
   const player1Total = getTotal(player1Scores);
   const player2Total = getTotal(player2Scores);
+  const currentBreaker = getCurrentBreaker();
 
   return (
     <div className="min-h-screen p-4">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-6 text-center">JCL Scoreboard</h1>
 
+        {/* 最初のブレイク選択UI */}
+        {!initialBreaker && (
+          <div className="mb-6 bg-blue-50 dark:bg-blue-900 rounded-lg p-4 border-2 border-blue-300">
+            <p className="text-center font-semibold mb-3">最初のブレイクをするプレイヤーを選択してください</p>
+            <div className="flex gap-4 justify-center">
+              <button
+                type="button"
+                onClick={() => setInitialBreaker('player1')}
+                className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                {player1.name}
+              </button>
+              <button
+                type="button"
+                onClick={() => setInitialBreaker('player2')}
+                className="px-6 py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                {player2.name}
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <PlayerScoreCard player={player1} totalScore={player1Total} goalScore={player1Goal} />
-          <PlayerScoreCard player={player2} totalScore={player2Total} goalScore={player2Goal} />
+          <PlayerScoreCard
+            player={player1}
+            totalScore={player1Total}
+            goalScore={player1Goal}
+            isBreaking={currentBreaker === 'player1'}
+          />
+          <PlayerScoreCard
+            player={player2}
+            totalScore={player2Total}
+            goalScore={player2Goal}
+            isBreaking={currentBreaker === 'player2'}
+          />
         </div>
 
         <ScoreInput

@@ -4,9 +4,10 @@ interface PlayerScoreCardProps {
   player: Player;
   totalScore: number;
   goalScore?: number;
+  isBreaking?: boolean;
 }
 
-export default function PlayerScoreCard({ player, totalScore, goalScore }: PlayerScoreCardProps) {
+export default function PlayerScoreCard({ player, totalScore, goalScore, isBreaking }: PlayerScoreCardProps) {
   const hasWon = goalScore && totalScore >= goalScore;
 
   // to hill と to win を計算
@@ -22,7 +23,12 @@ export default function PlayerScoreCard({ player, totalScore, goalScore }: Playe
         ? 'bg-gradient-to-br from-orange-50 to-orange-100 dark:from-orange-900 dark:to-orange-800 border-2 border-orange-400'
         : 'bg-white dark:bg-gray-800'
     }`}>
-      <h2 className="text-xl font-bold mb-2">{player.name}</h2>
+      <div className="flex items-center gap-2 mb-2">
+        <h2 className="text-xl font-bold">{player.name}</h2>
+        <span className="text-2xl" title={isBreaking ? 'ブレイク中' : ''}>
+          {isBreaking ? '🎱' : '\u00A0'}
+        </span>
+      </div>
       <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
         Fargorate: {player.fargo || 'N/A'}
       </p>
