@@ -27,3 +27,7 @@ mainブランチにpushすると、GitHub Actionsが自動的にGitHub Pagesに�
 
 1. GitHubリポジトリの Settings > Pages
 2. Source: GitHub Actions を選択
+
+## ドキュメント
+
+技術的な意思決定の記録は [`docs/decisions.md`](./docs/decisions.md) を参照してください。
